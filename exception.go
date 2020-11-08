@@ -1,4 +1,4 @@
-package dddeerr
+package ddderr
 
 // errFormat error - description
 const errFormat = "%w#%s"

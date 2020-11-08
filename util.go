@@ -1,4 +1,4 @@
-package dddeerr
+package ddderr
 
 import "errors"
 
