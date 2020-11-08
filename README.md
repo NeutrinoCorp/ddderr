@@ -18,8 +18,9 @@ which happen inside the _domain and/or infrastructure_ layer(s).
 
 **HTTP status codes**
 ```go
-err := ddderr.NewNotFound("user")
+err := ddderr.NewNotFound(errors.New("row not found"), "user")
 log.Print(ddderr.GetDescription(err)) // prints: "user not found"
+log.Print(ddderr.GetParentDescription(err)) // prints: "row not found"
 
 if errors.Is(err, ddderr.NotFound) {
   log.Print(http.StatusNotFound) // prints: 404
@@ -67,4 +68,4 @@ if ddderr.IsDomain(err) {
 ```
 
 ## Requirements
-- Go version 1.15
+- Go version >= 1.13
