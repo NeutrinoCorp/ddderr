@@ -17,6 +17,7 @@ foo@bar:~$ go get github.com/neutrinocorp/ddderr
 - Not Acknowledging messages from an event bus if got a Network or Infrastructure generic exception.
 - Get an HTTP/gRPC/OpenCensus status code from an error.
 - Implement multiple strategies when an specific (or generic) type of error was thrown in.
+- Fine-grained exception logging on infrastructure layer by using GetParentDescription() function.
 - More.
 
 ## Usability
