@@ -14,7 +14,7 @@ Using existing validators such as playground's implementation is overwhelming be
 
 In addition, infrastructure exceptions were added so you may be able to _catch specific kind of infrastructure errors._
 
-Exceptions _descriptions are based on the Google Cloud API Design Guideline_.
+Exceptions _descriptions are based on the Google Cloud API Design Guidelines_.
 
 `DDD Error` is compatible with popular error-handling packages such as [Hashicorp's go-multierror](https://github.com/hashicorp/go-multierror)
 
