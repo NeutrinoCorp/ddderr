@@ -52,10 +52,10 @@ log.Print(ddderr.GetParentDescription(err)) // prints: "specific db error"
 
 **Implement multiple strategies depending on exception kind**
 ```go
-dbErr := errors.New("failed to connect to host 127.0.0.1")
-err := ddderr.NewFailedRemoteCall(dbErr, "apache cassandra")
-log.Print(ddderr.GetDescription(err)) // prints: "remote call to apache cassandra has failed"
-log.Print(ddderr.GetParentDescription(err)) // prints: "failed to connect to host 127.0.0.1"
+dbErr := errors.New("connection to host 127.0.0.1 failed")
+err := exception.NewFailedRemoteCall(dbErr, "apache cassandra")
+log.Print(exception.GetDescription(err)) // prints: "remote call to apache cassandra has failed"
+log.Print(exception.GetParentDescription(err)) // prints: "connection to host 127.0.0.1 failed"
 
 if ddderr.IsDomain(err) {
   // handle domain errors
