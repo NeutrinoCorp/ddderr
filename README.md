@@ -10,7 +10,8 @@
 
 `DDD Error` is a _generic domain-driven exception wrapper_ made for Go.
 
-Using existing validators such as playground's implementation is overwhelming because tag validation and the need to rewrite descriptions. With DDD Error, you may still use 3rd-party validators or make your own validations in your value objects, entities or aggregates.
+Using existing _validators_ such as playground's implementation is _overwhelming because tag validation_ and the need to rewrite descriptions. 
+With `DDD Error`, _you may still use 3rd-party validators_ or _make your own validations_ in your value objects, entities or aggregates.
 
 In addition, infrastructure exceptions were added so you may be able to _catch specific kind of infrastructure errors._
 
