@@ -7,12 +7,12 @@ In addition, infrastructure exceptions were added so you may be able to _catch s
 
 Exceptions _descriptions are based on the Google Cloud API Design Guideline_.
 
-Furthermore, **_DDD Error_** aims to _ease the lack of exception handling_ in The Go Programming Language by defining a _wide selection of common exceptions_ 
-which happen inside the _domain and/or infrastructure_ layer(s).
-
 **_DDD Error_** is compatible with popular error-handling packages such as [Hashicorp's go-multierror](https://github.com/hashicorp/go-multierror)
 
-Finally, **_DDD Error_** is dependency-free, it _uses built-in packages_ such as errors package.
+In conclusion, **_DDD Error_** aims to _ease the lack of exception handling_ in The Go Programming Language by defining a _wide selection of common exceptions_ 
+which happen inside the _domain and/or infrastructure_ layer(s).
+
+_Note: **DDD Error** is dependency-free, it uses built-in packages such as errors package._
 
 **Install**
 ```console
