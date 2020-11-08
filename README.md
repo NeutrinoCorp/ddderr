@@ -6,6 +6,11 @@ which happen inside the _domain and/or infrastructure_ layer(s).
 
 **_DDD Error_** is dependency-free, it _uses built-in packages_ such as errors package.
 
+**Install**
+```console
+foo@bar:~$ go get github.com/neutrinocorp/ddderr
+```
+
 
 ## Use cases
 - Implement retry strategy and circuit breaker resiliency patterns by adding Network exception to the whitelist.
