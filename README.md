@@ -14,7 +14,7 @@ foo@bar:~$ go get github.com/neutrinocorp/ddderr
 
 ## Use cases
 - Implement retry strategy and circuit breaker resiliency patterns by adding Network exception to the whitelist.
-- Not Acknowledge messages from an event bus if got a Network or Infrastructure generic exception.
+- Not Acknowledging messages from an event bus if got a Network or Infrastructure generic exception.
 - Get an HTTP/gRPC/OpenCensus status code from an error.
 - Implement multiple strategies when an specific (or generic) type of error was thrown in.
 - More.
