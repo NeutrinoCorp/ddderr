@@ -1,10 +1,12 @@
 # DDD Error
 **_DDD Error_** is a _generic domain-driven exception wrapper_ made for Go.
 
-**_DDD Error_** aims to _ease the lack of exception handling_ in The Go Programming Language by defining a _wide selection of common exceptions_ 
+Exceptions' descriptions are based on the Google Cloud API Design Guideline.
+
+Furthermore, **_DDD Error_** aims to _ease the lack of exception handling_ in The Go Programming Language by defining a _wide selection of common exceptions_ 
 which happen inside the _domain and/or infrastructure_ layer(s).
 
-**_DDD Error_** is dependency-free, it _uses built-in packages_ such as errors package.
+Finally, **_DDD Error_** is dependency-free, it _uses built-in packages_ such as errors package.
 
 **Install**
 ```console
