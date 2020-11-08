@@ -14,10 +14,8 @@ which happen inside the _domain and/or infrastructure_ layer(s).
 
 _Note: **DDD Error** is dependency-free, it uses built-in packages such as errors package._
 
-**Install**
-```console
-foo@bar:~$ go get github.com/neutrinocorp/ddderr
-```
+## Installation
+    go get github.com/neutrinocorp/ddderr
 
 
 ## Use cases
