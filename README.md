@@ -65,3 +65,6 @@ if ddderr.IsDomain(err) {
   log.Print("error comes from infrastructure")
 }
 ```
+
+## Requirements
+- Go version 1.15
