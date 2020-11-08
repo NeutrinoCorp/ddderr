@@ -3,12 +3,14 @@
 
 Using existing validators such as playground's implementation is overwhelming because tag validation and the need to rewrite descriptions. With DDD Error, you may still use 3rd-party validators or make your own validations in your value objects, entities or aggregates.
 
-In addition, infrastructure exceptions were added so you may be able to catch specific kind of infrastructure errors.
+In addition, infrastructure exceptions were added so you may be able to _catch specific kind of infrastructure errors._
 
-Exceptions descriptions are based on the Google Cloud API Design Guideline.
+Exceptions _descriptions are based on the Google Cloud API Design Guideline_.
 
 Furthermore, **_DDD Error_** aims to _ease the lack of exception handling_ in The Go Programming Language by defining a _wide selection of common exceptions_ 
 which happen inside the _domain and/or infrastructure_ layer(s).
+
+**_DDD Error_** is compatible with popular error-handling packages such as [Hashicorp's go-multierror](https://github.com/hashicorp/go-multierror)
 
 Finally, **_DDD Error_** is dependency-free, it _uses built-in packages_ such as errors package.
 
