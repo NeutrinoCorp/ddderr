@@ -3,6 +3,8 @@
 
 Using existing validators such as playground's implementation is overwhelming because tag validation and the need to rewrite descriptions. With DDD Error, you may still use 3rd-party validators or make your own validations in your value objects, entities or aggregates.
 
+In addition, infrastructure exceptions were added so you may be able to catch specific kind of infrastructure errors.
+
 Exceptions descriptions are based on the Google Cloud API Design Guideline.
 
 Furthermore, **_DDD Error_** aims to _ease the lack of exception handling_ in The Go Programming Language by defining a _wide selection of common exceptions_ 
