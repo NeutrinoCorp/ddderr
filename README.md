@@ -5,7 +5,7 @@
 [![Go Version](https://img.shields.io/github/go-mod/go-version/neutrinocorp/ddderr?style=flat-square)][goversion]
 
 [actions]: https://github.com/neutrinocorp/ddderr/workflows/Go/badge.svg?branch=master
-[godocs]: https://godoc.org/github.com/neutrinocorp/ddderr
+[godocs]: https://pkg.go.dev/github.com/neutrinocorp/ddderr
 [goversion]: https://img.shields.io/github/go-mod/go-version/neutrinocorp/ddderr
 
 `DDD Error` is a _generic domain-driven exception wrapper_ made for Go.
