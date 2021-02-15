@@ -111,5 +111,5 @@ if ddderr.IsDomain(err) {
 [godocs]: https://pkg.go.dev/github.com/neutrinocorp/ddderr
 [cov-img]: https://codecov.io/gh/NeutrinoCorp/ddderr/branch/master/graph/badge.svg
 [cov]: https://codecov.io/gh/NeutrinoCorp/ddderr
-[go-img]: https://img.shields.io/github/go-mod/go-version/NeutrinoCorp/quark?style=square
-[go]: https://github.com/NeutrinoCorp/quark/blob/master/go.mod
+[go-img]: https://img.shields.io/github/go-mod/go-version/NeutrinoCorp/ddderr?style=square
+[go]: https://github.com/NeutrinoCorp/ddderr/blob/master/go.mod
