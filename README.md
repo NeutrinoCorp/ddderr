@@ -22,7 +22,7 @@ Exceptions _descriptions are based on the [Google Cloud API Design Guidelines](h
 In conclusion, `DDD Error` aims to _ease the lack of exception handling_ in The Go Programming Language by defining a _wide selection of common exceptions_ 
 which happen inside the _domain and/or infrastructure_ layer(s).
 
-_Note: `DDD Error` is dependency-free, it uses built-in packages such as errors package._
+_Note: `DDD Error` is dependency-free, it complies with Go's built-in error interface and avoids reflection to increase overall performance._
 
 ## Installation
 Install `DDD Error` by running the command
