@@ -1,7 +1,9 @@
 # DDD Error
 
 ![Go Build](https://github.com/neutrinocorp/ddderr/workflows/Go/badge.svg?branch=master)
-[![Go Documentation](http://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)][godocs]
+[![Go Report Card](https://goreportcard.com/badge/github.com/neutrinocorp/ddderr)](https://goreportcard.com/report/github.com/neutrinocorp/ddderr)
+[![codebeat badge](https://codebeat.co/badges/22d865b6-c99a-469a-bb85-6b2d6f44a6fe)](https://codebeat.co/projects/github-com-neutrinocorp-ddderr-master)
+[![GoDoc](https://pkg.go.dev/badge/github.com/neutrinocorp/ddderr)][godocs]
 [![Go Version](https://img.shields.io/github/go-mod/go-version/neutrinocorp/ddderr?style=flat-square)][goversion]
 
 [actions]: https://github.com/neutrinocorp/ddderr/workflows/Go/badge.svg?branch=master
