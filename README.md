@@ -1,9 +1,10 @@
 # DDD Error
 
 ![Go Build](https://github.com/neutrinocorp/ddderr/workflows/Go/badge.svg?branch=master)
+[![GoDoc](https://pkg.go.dev/badge/github.com/neutrinocorp/ddderr)][godocs]
 [![Go Report Card](https://goreportcard.com/badge/github.com/neutrinocorp/ddderr)](https://goreportcard.com/report/github.com/neutrinocorp/ddderr)
 [![codebeat badge](https://codebeat.co/badges/22d865b6-c99a-469a-bb85-6b2d6f44a6fe)](https://codebeat.co/projects/github-com-neutrinocorp-ddderr-master)
-[![GoDoc](https://pkg.go.dev/badge/github.com/neutrinocorp/ddderr)][godocs]
+[![Coverage Status][cov-img]][cov]
 [![Go Version](https://img.shields.io/github/go-mod/go-version/neutrinocorp/ddderr?style=flat-square)][goversion]
 
 [actions]: https://github.com/neutrinocorp/ddderr/workflows/Go/badge.svg?branch=master
@@ -109,3 +110,6 @@ if ddderr.IsDomain(err) {
 
 ## Requirements
 - Go version >= 1.13
+
+[cov-img]: https://codecov.io/gh/NeutrinoCorp/ddderr/branch/master/graph/badge.svg
+[cov]: https://codecov.io/gh/NeutrinoCorp/ddderr
