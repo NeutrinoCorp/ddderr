@@ -46,11 +46,10 @@ Full documentation is available
 Set an HTTP error code depending on the exception.
 
 ```go
-err := ddderr.NewNotFound(errors.New("row not found"), "user")
-log.Print(ddderr.GetDescription(err)) // prints: "user not found"
-log.Print(ddderr.GetParentDescription(err)) // prints: "row not found"
+err := ddderr.NewNotFound("foo")
+log.Print(err) // prints: "foo not found"
 
-if errors.Is(err, ddderr.NotFound) {
+if err.IsNotFound() {
   log.Print(http.StatusNotFound) // prints: 404
   return
 }
@@ -63,10 +62,10 @@ log.Print(http.StatusInternalServerError) // prints: 500
 Create a generic domain exception when other domain errors don't fulfill your requirements.
 
 ```go
-err := ddderr.NewDomain("something happened inside domain")
-log.Print(ddderr.GetDescription(err)) // prints: "something happened inside domain"
+err := ddderr.NewDomain("foo", "foo has returned a generic domain error")
+log.Print(err) // prints: "foo has returned a generic domain error"
 
-if errors.Is(err, ddderr.GenericDomain) {
+if err.IsDomain() {
   log.Print(http.StatusBadRequest) // prints: 400
   return
 }
@@ -79,10 +78,10 @@ log.Print(http.StatusInternalServerError) // prints: 500
 Create a generic infrastructure exception when other infrastructure exceptions don't fulfill your requirements.
 
 ```go
-dbErr := errors.New("specific db error")
-err := ddderr.NewInfrastructure(dbErr, "custom error description")
-log.Print(ddderr.GetDescription(err)) // prints: "custom error description"
-log.Print(ddderr.GetParentDescription(err)) // prints: "specific db error"
+msgErr := errors.New("apache kafka consumer error")
+err := ddderr.NewInfrastructure(msgErr, "error while consuming message from queue")
+log.Print(err) // prints: "error while consuming message from queue"
+log.Print(err.Parent()) // prints: "apache kafka consumer error"
 ```
 
 **Implement multiple strategies depending on exception kind**
@@ -90,19 +89,21 @@ log.Print(ddderr.GetParentDescription(err)) // prints: "specific db error"
 Take an specific action depending on the exception kind.
 
 ```go
-dbErr := errors.New("connection to host 127.0.0.1 failed")
-err := ddderr.NewFailedRemoteCall(dbErr, "apache cassandra")
-log.Print(ddderr.GetDescription(err)) // prints: "remote call to apache cassandra has failed"
-log.Print(ddderr.GetParentDescription(err)) // prints: "connection to host 127.0.0.1 failed"
+esErr := errors.New("failed to connect to Elasticsearch host http://127.0.0.1:9300")
 
-if ddderr.IsDomain(err) {
-  // handle domain errors
-  log.Print("error comes from domain")
-} else if ddderr.IsInfrastructure(err) {
-  // handle infrastructure errors
-  log.Print("error comes from infrastructure")
+err := ddderr.NewRemoteCall(esErr, "elasticsearch")
+log.Print("infrastructure error: ", err)                       // prints "failed to call external resource [elasticsearch]"
+log.Print("infrastructure error entity: ", err.Entity())       // empty string
+log.Print("is domain error: ", err.IsDomain())                 // false
+log.Print("is infrastructure error: ", err.IsInfrastructure()) // true
+log.Print("infrastructure error parent: ", err.Parent())       // prints "failed to connect to Elasticsearch host http://127.0.0.1:9300"
+
+if err.IsRemoteCall() {
+    // implement retry and/or circuit breaker pattern(s)
 }
 ```
+
+See [examples][examples] for more details.
 
 ## Requirements
 - Go version >= 1.13
@@ -113,3 +114,4 @@ if ddderr.IsDomain(err) {
 [cov]: https://codecov.io/gh/NeutrinoCorp/ddderr
 [go-img]: https://img.shields.io/github/go-mod/go-version/NeutrinoCorp/ddderr?style=square
 [go]: https://github.com/NeutrinoCorp/ddderr/blob/master/go.mod
+[examples]: https://github.com/neutrinocorp/ddderr/tree/master/examples
