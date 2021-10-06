@@ -1,17 +1,22 @@
 package ddderr
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestError_Setters(t *testing.T) {
+	pqMockedErr := errors.New("pq: Generic PostgreSQL driver error")
 	err := NewDomain("", "").
+		AttachParent(pqMockedErr).
 		SetKind("CustomKind").
 		SetTitle("generic title").
 		SetDescription("specific description").
 		SetProperty("foo")
+
+	assert.EqualValues(t, pqMockedErr, err.Parent())
 	assert.Equal(t, "CustomKind", err.Kind())
 	assert.Equal(t, "generic title", err.Title())
 	assert.Equal(t, "specific description", err.Description())
