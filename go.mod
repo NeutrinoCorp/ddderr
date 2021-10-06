@@ -1,4 +1,4 @@
-module github.com/neutrinocorp/ddderr
+module github.com/neutrinocorp/ddderr/v3
 
 go 1.13
 
