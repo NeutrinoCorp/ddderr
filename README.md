@@ -1,7 +1,7 @@
 # :japanese_goblin: DDD Error
 
 ![Go Build](https://github.com/neutrinocorp/ddderr/workflows/Go/badge.svg?branch=master)
-[![GoDoc](https://pkg.go.dev/badge/github.com/neutrinocorp/ddderr)][godocs]
+[![GoDoc](https://pkg.go.dev/badge/github.com/neutrinocorp/ddderr/v3)][godocs]
 [![Go Report Card](https://goreportcard.com/badge/github.com/neutrinocorp/ddderr)](https://goreportcard.com/report/github.com/neutrinocorp/ddderr)
 [![codebeat badge](https://codebeat.co/badges/22d865b6-c99a-469a-bb85-6b2d6f44a6fe)](https://codebeat.co/projects/github-com-neutrinocorp-ddderr-master)
 [![Coverage Status][cov-img]][cov]
@@ -132,7 +132,7 @@ See [examples][examples] for more details.
 - Go version >= 1.13
 
 [actions]: https://github.com/neutrinocorp/ddderr/workflows/Go/badge.svg?branch=master
-[godocs]: https://pkg.go.dev/github.com/neutrinocorp/ddderr
+[godocs]: https://pkg.go.dev/github.com/neutrinocorp/ddderr/v3
 [cov-img]: https://codecov.io/gh/NeutrinoCorp/ddderr/branch/master/graph/badge.svg
 [cov]: https://codecov.io/gh/NeutrinoCorp/ddderr
 [go-img]: https://img.shields.io/github/go-mod/go-version/NeutrinoCorp/ddderr?style=square
