@@ -7,200 +7,263 @@ import (
 
 const (
 	// error types groups
-	domain         = "domain"
-	infrastructure = "infrastructure"
+	domain         = "Domain"
+	infrastructure = "Infrastructure"
 	// specific error types
-	notFound      = "not found"
-	alreadyExists = "already exists"
-	outOfRange    = "out of range"
-	invalidFormat = "invalid format"
-	required      = "required"
-	remoteCall    = "failed remote call"
+	notFound      = "NotFound"
+	alreadyExists = "AlreadyExists"
+	outOfRange    = "OutOfRange"
+	invalidFormat = "InvalidFormat"
+	required      = "Required"
+	remoteCall    = "FailedRemoteCall"
+
+	unknownDomain         = "UnknownDomain"
+	unknownInfrastructure = "UnknownInfrastructure"
 )
 
 // Error contains specific mechanisms useful for further error mapping and other
 // specific use cases
 type Error struct {
+	parent      error
 	group       string
 	kind        string
-	entity      string
+	property    string
+	title       string
 	description string
-	parent      error
 }
 
-// Error returns the current error description
+var _ error = Error{}
+
+// Error returns the error description
 func (e Error) Error() string {
+	return e.Description()
+}
+
+// Kind retrieves the error type (e.g. NotFound, AlreadyExists)
+func (e Error) Kind() string {
+	return e.kind
+}
+
+// SetKind sets the specific error type (e.g. NotFound, AlreadyExists)
+func (e Error) SetKind(kind string) Error {
+	e.kind = kind
+	return e
+}
+
+// Property returns the resource or field which contains the error
+func (e Error) Property() string {
+	return e.property
+}
+
+// SetProperty sets the field or resource for an error
+func (e Error) SetProperty(property string) Error {
+	e.property = property
+	return e
+}
+
+// Title retrieves a generic error message
+func (e Error) Title() string {
+	return e.title
+}
+
+// SetTitle sets a generic error message
+func (e Error) SetTitle(title string) Error {
+	e.title = title
+	return e
+}
+
+// Description retrieves a specific and detailed error message
+func (e Error) Description() string {
 	return e.description
 }
 
-// Entity returns the current domain entity
-func (e Error) Entity() string {
-	return e.entity
+// SetDescription sets a specific and detailed error message
+func (e Error) SetDescription(description string) Error {
+	e.description = description
+	return e
 }
 
-// Parent returns the current error parent
+// Parent returns the error parent
 //
-//	might return nil if parent was not specified
+// Note: Might return nil if parent was not specified
 func (e Error) Parent() error {
 	return e.parent
 }
 
-// IsDomain checks if the current error belongs to Domain error group
+// AttachParent sets a parent error to the given DDD error
+func (e Error) AttachParent(err error) Error {
+	e.parent = err
+	return e
+}
+
+// IsDomain checks if the error belongs to Domain error group
 func (e Error) IsDomain() bool {
 	return e.group == domain
 }
 
-// IsInfrastructure checks if the current error belongs to Infrastructure error group
+// IsInfrastructure checks if the error belongs to Infrastructure error group
 func (e Error) IsInfrastructure() bool {
 	return e.group == infrastructure
 }
 
-// IsRemoteCall checks if the current error belongs to Failed Remote Call error types
+// IsRemoteCall checks if the error belongs to Failed Remote Call error types
 func (e Error) IsRemoteCall() bool {
 	return e.kind == remoteCall
 }
 
-// IsNotFound checks if the current error belongs to Not Found error types
+// IsNotFound checks if the error belongs to Not Found error types
 func (e Error) IsNotFound() bool {
 	return e.kind == notFound
 }
 
-// IsAlreadyExists checks if the current error belongs to Already Exists error types
+// IsAlreadyExists checks if the error belongs to Already Exists error types
 func (e Error) IsAlreadyExists() bool {
 	return e.kind == alreadyExists
 }
 
-// IsOutOfRange checks if the current error belongs to Out of Range error types
+// IsOutOfRange checks if the error belongs to Out of Range error types
 func (e Error) IsOutOfRange() bool {
 	return e.kind == outOfRange
 }
 
-// IsInvalidFormat checks if the current error belongs to Invalid Format error types
+// IsInvalidFormat checks if the error belongs to Invalid Format error types
 func (e Error) IsInvalidFormat() bool {
 	return e.kind == invalidFormat
 }
 
-// IsRequired checks if the current error belongs to Required error types
+// IsRequired checks if the error belongs to Required error types
 func (e Error) IsRequired() bool {
 	return e.kind == required
 }
 
 // NewDomain creates an Error for Domain generic use cases
-//
-//	outputs given d input
-func NewDomain(e, d string) Error {
+func NewDomain(title, description string) Error {
 	return Error{
+		parent:      nil,
 		group:       domain,
-		entity:      e,
-		description: d,
+		kind:        unknownDomain,
+		property:    "",
+		title:       title,
+		description: description,
 	}
 }
 
 // NewInfrastructure creates an Error for Infrastructure generic use cases
-//
-//	may hold a raw parent error for further interactions
-//	outputs given d input
-func NewInfrastructure(p error, d string) Error {
+func NewInfrastructure(title, description string) Error {
 	return Error{
+		parent:      nil,
 		group:       infrastructure,
-		description: d,
-		parent:      p,
+		kind:        unknownInfrastructure,
+		property:    "",
+		title:       title,
+		description: description,
 	}
 }
 
-// NewRemoteCall creates an Error for Failed Remote Call use cases
+// NewRemoteCall creates an Error for network remote calls failing scenarios
 //
-//	may hold a raw parent error for further interactions
-//	outputs "failed to call external resource [_RESOURCE_]"
-func NewRemoteCall(p error, r string) Error {
-	desc := ""
-	if r != "" {
-		desc = " [" + r + "]"
+// (e.g. database connection failed, sync inter-service transaction failed over a networking problem)
+func NewRemoteCall(externalResource string) Error {
+	desc := "Failed to call external resource"
+	if externalResource != "" {
+		desc = desc + " [" + externalResource + "]"
 	}
 	return Error{
+		parent:      nil,
 		group:       infrastructure,
 		kind:        remoteCall,
-		description: "failed to call external resource" + desc,
-		parent:      p,
+		property:    externalResource,
+		title:       "Remote call failed",
+		description: desc,
 	}
 }
 
 // NewNotFound creates an Error for Not Found use cases
 //
-//	outputs "_ENTITY_ not found"
-func NewNotFound(e string) Error {
-	entityDesc := ""
-	if e != "" {
-		entityDesc = e + " "
+// (description e.g. The resource foo was not found)
+func NewNotFound(resource string) Error {
+	desc := "not found"
+	if resource != "" {
+		desc = "The resource " + resource + " was not found"
 	}
 	return Error{
+		parent:      nil,
 		group:       domain,
 		kind:        notFound,
-		entity:      e,
-		description: entityDesc + "not found",
+		property:    resource,
+		title:       "Resource not found",
+		description: desc,
 	}
 }
 
 // NewAlreadyExists creates an Error for Already Exists use cases
 //
-//	outputs "_ENTITY_ already exists"
-func NewAlreadyExists(e string) Error {
-	entityDesc := ""
-	if e != "" {
-		entityDesc = e + " "
+// (description e.g. The resource foo was already created)
+func NewAlreadyExists(resource string) Error {
+	desc := "already exists"
+	if resource != "" {
+		desc = "The resource " + resource + " already exists"
 	}
 	return Error{
+		parent:      nil,
 		group:       domain,
 		kind:        alreadyExists,
-		entity:      e,
-		description: entityDesc + "already exists",
+		property:    resource,
+		title:       "Resource already exists",
+		description: desc,
 	}
 }
 
 // NewOutOfRange creates an Error for Out of Range use cases
 //
-//	outputs "_ENTITY_ is out of range [_A_,_B_)"
-func NewOutOfRange(e string, a, b int) Error {
-	entityDesc := ""
-	if e != "" {
-		entityDesc = e + " is "
+// (description e.g. The property foo is out of range [A, B))
+func NewOutOfRange(property string, limA, limB int) Error {
+	desc := "out of range [" + strconv.Itoa(limA) + "," + strconv.Itoa(limB) + ")"
+	if property != "" {
+		desc = "The property " + property + " is " + desc
 	}
 	return Error{
+		parent:      nil,
 		group:       domain,
 		kind:        outOfRange,
-		entity:      e,
-		description: entityDesc + "out of range [" + strconv.Itoa(a) + "," + strconv.Itoa(b) + ")",
+		property:    property,
+		title:       "Property is out of the specified range",
+		description: desc,
 	}
 }
 
 // NewInvalidFormat creates an Error for Invalid Format use cases
 //
-//	outputs "_ENTITY_ contains an invalid format, expected [_EXPECTED-1_,_EXPEXTED-N_]"
-func NewInvalidFormat(e string, exp ...string) Error {
-	entityDesc := ""
-	if e != "" {
-		entityDesc = e + " contains an "
+// (description e.g. The property foo has an invalid format, expected [x1, x2, xN))
+func NewInvalidFormat(property string, formats ...string) Error {
+	desc := "invalid format, expected [" + strings.Join(formats, ",") + "]"
+	if property != "" {
+		desc = "The property " + property + " has an " + desc
 	}
 	return Error{
+		parent:      nil,
 		group:       domain,
 		kind:        invalidFormat,
-		entity:      e,
-		description: entityDesc + "invalid format, expected [" + strings.Join(exp, ",") + "]",
+		property:    property,
+		title:       "Property is not a valid format",
+		description: desc,
 	}
 }
 
 // NewRequired creates an Error for Required use cases
 //
-//	outputs "_ENTITY_ is required"
-func NewRequired(e string) Error {
-	entityDesc := ""
-	if e != "" {
-		entityDesc = e + " is "
+// (description e.g. The property foo is required)
+func NewRequired(property string) Error {
+	desc := "required"
+	if property != "" {
+		desc = "The property " + property + " is " + desc
 	}
 	return Error{
+		parent:      nil,
 		group:       domain,
 		kind:        required,
-		entity:      e,
-		description: entityDesc + "required",
+		property:    property,
+		title:       "Missing property",
+		description: desc,
 	}
 }
