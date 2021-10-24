@@ -14,7 +14,8 @@ func TestError_Setters(t *testing.T) {
 		SetKind("CustomKind").
 		SetTitle("generic title").
 		SetDescription("specific description").
-		SetProperty("foo")
+		SetProperty("foo").
+		SetStatus("FooIsBad")
 
 	assert.EqualValues(t, pqMockedErr, err.Parent())
 	assert.Equal(t, "CustomKind", err.Kind())
@@ -22,6 +23,7 @@ func TestError_Setters(t *testing.T) {
 	assert.Equal(t, "specific description", err.Description())
 	assert.Equal(t, "foo", err.Property())
 	assert.Equal(t, "specific description", err.Error())
+	assert.Equal(t, "FooIsBad", err.Status())
 }
 
 var newDomainTestSuite = []struct {
@@ -141,6 +143,7 @@ var newRemoteCallTestSuite = []struct {
 			property:    "",
 			title:       "Remote call failed",
 			description: "Failed to call external resource",
+			statusName:  "FailedRemoteCall",
 		},
 	},
 	{
@@ -152,6 +155,7 @@ var newRemoteCallTestSuite = []struct {
 			property:    "https://foo.com",
 			title:       "Remote call failed",
 			description: "Failed to call external resource [https://foo.com]",
+			statusName:  "FailedRemoteCall",
 		},
 	},
 }
@@ -190,6 +194,7 @@ var newNotFoundTestSuite = []struct {
 			property:    "",
 			title:       "Resource not found",
 			description: "not found",
+			statusName:  "NotFound",
 		},
 	},
 	{
@@ -201,6 +206,7 @@ var newNotFoundTestSuite = []struct {
 			property:    "foo",
 			title:       "Resource not found",
 			description: "The resource foo was not found",
+			statusName:  "FooNotFound",
 		},
 	},
 }
@@ -239,6 +245,7 @@ var newAlreadyExistsTestSuite = []struct {
 			property:    "",
 			title:       "Resource already exists",
 			description: "already exists",
+			statusName:  "AlreadyExists",
 		},
 	},
 	{
@@ -250,6 +257,7 @@ var newAlreadyExistsTestSuite = []struct {
 			property:    "foo",
 			title:       "Resource already exists",
 			description: "The resource foo already exists",
+			statusName:  "FooAlreadyExists",
 		},
 	},
 }
@@ -292,6 +300,7 @@ var newOutOfRangeTestSuite = []struct {
 			property:    "",
 			title:       "Property is out of the specified range",
 			description: "out of range [0,0)",
+			statusName:  "OutOfRange",
 		},
 	},
 	{
@@ -305,6 +314,7 @@ var newOutOfRangeTestSuite = []struct {
 			property:    "foo",
 			title:       "Property is out of the specified range",
 			description: "The property foo is out of range [0,0)",
+			statusName:  "FooOutOfRange",
 		},
 	},
 	{
@@ -318,6 +328,7 @@ var newOutOfRangeTestSuite = []struct {
 			property:    "",
 			title:       "Property is out of the specified range",
 			description: "out of range [8,256)",
+			statusName:  "OutOfRange",
 		},
 	},
 	{
@@ -331,6 +342,7 @@ var newOutOfRangeTestSuite = []struct {
 			property:    "foo",
 			title:       "Property is out of the specified range",
 			description: "The property foo is out of range [8,256)",
+			statusName:  "FooOutOfRange",
 		},
 	},
 }
@@ -371,6 +383,7 @@ var newInvalidFormatTestSuite = []struct {
 			property:    "",
 			title:       "Property is not a valid format",
 			description: "invalid format, expected []",
+			statusName:  "InvalidFormat",
 		},
 	},
 	{
@@ -383,6 +396,7 @@ var newInvalidFormatTestSuite = []struct {
 			property:    "",
 			title:       "Property is not a valid format",
 			description: "invalid format, expected [foo]",
+			statusName:  "InvalidFormat",
 		},
 	},
 	{
@@ -395,6 +409,7 @@ var newInvalidFormatTestSuite = []struct {
 			property:    "foo",
 			title:       "Property is not a valid format",
 			description: "The property foo has an invalid format, expected [bar]",
+			statusName:  "FooInvalidFormat",
 		},
 	},
 	{
@@ -407,6 +422,7 @@ var newInvalidFormatTestSuite = []struct {
 			property:    "foo",
 			title:       "Property is not a valid format",
 			description: "The property foo has an invalid format, expected [bar,baz]",
+			statusName:  "FooInvalidFormat",
 		},
 	},
 }
@@ -445,6 +461,7 @@ var newRequiredTestSuite = []struct {
 			property:    "",
 			title:       "Missing property",
 			description: "required",
+			statusName:  "IsRequired",
 		},
 	},
 	{
@@ -456,6 +473,7 @@ var newRequiredTestSuite = []struct {
 			property:    "foo",
 			title:       "Missing property",
 			description: "The property foo is required",
+			statusName:  "FooIsRequired",
 		},
 	},
 }

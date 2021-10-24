@@ -30,6 +30,7 @@ type Error struct {
 	property    string
 	title       string
 	description string
+	statusName  string
 }
 
 var _ error = Error{}
@@ -81,6 +82,17 @@ func (e Error) Description() string {
 func (e Error) SetDescription(description string) Error {
 	e.description = description
 	return e
+}
+
+// SetStatus sets a system-owned status for the Error
+func (e Error) SetStatus(status string) Error {
+	e.statusName = status
+	return e
+}
+
+// Status retrieves the status name of the Error owned by the system
+func (e Error) Status() string {
+	return e.statusName
 }
 
 // Parent returns the error parent
@@ -175,6 +187,7 @@ func NewRemoteCall(externalResource string) Error {
 		property:    externalResource,
 		title:       "Remote call failed",
 		description: desc,
+		statusName:  "FailedRemoteCall",
 	}
 }
 
@@ -193,6 +206,7 @@ func NewNotFound(resource string) Error {
 		property:    resource,
 		title:       "Resource not found",
 		description: desc,
+		statusName:  strings.Title(resource) + "NotFound",
 	}
 }
 
@@ -211,6 +225,7 @@ func NewAlreadyExists(resource string) Error {
 		property:    resource,
 		title:       "Resource already exists",
 		description: desc,
+		statusName:  strings.Title(resource) + "AlreadyExists",
 	}
 }
 
@@ -229,6 +244,7 @@ func NewOutOfRange(property string, limA, limB int) Error {
 		property:    property,
 		title:       "Property is out of the specified range",
 		description: desc,
+		statusName:  strings.Title(property) + "OutOfRange",
 	}
 }
 
@@ -247,6 +263,7 @@ func NewInvalidFormat(property string, formats ...string) Error {
 		property:    property,
 		title:       "Property is not a valid format",
 		description: desc,
+		statusName:  strings.Title(property) + "InvalidFormat",
 	}
 }
 
@@ -265,5 +282,6 @@ func NewRequired(property string) Error {
 		property:    property,
 		title:       "Missing property",
 		description: desc,
+		statusName:  strings.Title(property) + "IsRequired",
 	}
 }
