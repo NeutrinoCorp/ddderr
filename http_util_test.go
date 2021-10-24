@@ -131,6 +131,19 @@ var newHttpErrorTestSuite = []struct {
 		},
 	},
 	{
+		InErrType:  "",
+		InInstance: "/users/12345/msg/abc",
+		InErr:      NewNotFound("foo").SetStatus("FooNotFound"),
+		ExpHttpErr: HttpError{
+			Type:       "Not Found",
+			Title:      "Resource not found",
+			Status:     "FooNotFound",
+			StatusCode: http.StatusNotFound,
+			Detail:     "The resource foo was not found",
+			Instance:   "/users/12345/msg/abc",
+		},
+	},
+	{
 		InErrType:  "https://neutrinocorp.org/iam/probs/required",
 		InInstance: "/users/12345/msg/abc",
 		InErr:      NewRequired("foo"),

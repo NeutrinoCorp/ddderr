@@ -38,10 +38,11 @@ func NewHttpError(errType, instance string, err error) HttpError {
 	}
 
 	code = GetHttpStatusCode(customErr)
+	errHttpType = getHttpErrorType(errType, code)
 	return HttpError{
 		Type:       errHttpType,
 		Title:      customErr.Title(),
-		Status:     getHttpDddErrorType(customErr, code),
+		Status:     getHttpDddErrorStatus(customErr, code),
 		StatusCode: code,
 		Detail:     customErr.Description(),
 		Instance:   instance,
@@ -61,7 +62,7 @@ func getHttpErrorType(rootType string, status int) string {
 // retrieves a status name from an Error or a generic HTTP problem object type.
 //
 // For more information, go to: https://datatracker.ietf.org/doc/html/rfc7807#section-4.2
-func getHttpDddErrorType(err Error, status int) string {
+func getHttpDddErrorStatus(err Error, status int) string {
 	if statusName := err.Status(); statusName != "" {
 		return statusName
 	}
