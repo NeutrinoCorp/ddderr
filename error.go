@@ -206,7 +206,7 @@ func NewNotFound(resource string) Error {
 		property:    resource,
 		title:       "Resource not found",
 		description: desc,
-		statusName:  strings.Title(resource) + "NotFound",
+		statusName:  getSanitizedStatusName(resource, "NotFound"),
 	}
 }
 
@@ -225,7 +225,7 @@ func NewAlreadyExists(resource string) Error {
 		property:    resource,
 		title:       "Resource already exists",
 		description: desc,
-		statusName:  strings.Title(resource) + "AlreadyExists",
+		statusName:  getSanitizedStatusName(resource, "AlreadyExists"),
 	}
 }
 
@@ -244,7 +244,7 @@ func NewOutOfRange(property string, limA, limB int) Error {
 		property:    property,
 		title:       "Property is out of the specified range",
 		description: desc,
-		statusName:  strings.Title(property) + "OutOfRange",
+		statusName:  getSanitizedStatusName(property, "OutOfRange"),
 	}
 }
 
@@ -263,7 +263,7 @@ func NewInvalidFormat(property string, formats ...string) Error {
 		property:    property,
 		title:       "Property is not a valid format",
 		description: desc,
-		statusName:  strings.Title(property) + "InvalidFormat",
+		statusName:  getSanitizedStatusName(property, "InvalidFormat"),
 	}
 }
 
@@ -282,6 +282,6 @@ func NewRequired(property string) Error {
 		property:    property,
 		title:       "Missing property",
 		description: desc,
-		statusName:  strings.Title(property) + "IsRequired",
+		statusName:  getSanitizedStatusName(property, "IsRequired"),
 	}
 }
