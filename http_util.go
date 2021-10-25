@@ -30,7 +30,7 @@ func NewHttpError(errType, instance string, err error) HttpError {
 		return HttpError{
 			Type:       errHttpType,
 			Title:      err.Error(),
-			Status:     errHttpType,
+			Status:     http.StatusText(code),
 			StatusCode: code,
 			Detail:     err.Error(),
 			Instance:   instance,

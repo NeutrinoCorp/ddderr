@@ -111,7 +111,20 @@ var newHttpErrorTestSuite = []struct {
 		ExpHttpErr: HttpError{
 			Type:       "https://neutrinocorp.org/iam/probs/generic-error",
 			Title:      "generic error",
-			Status:     "https://neutrinocorp.org/iam/probs/generic-error",
+			Status:     "Internal Server Error",
+			StatusCode: http.StatusInternalServerError,
+			Detail:     "generic error",
+			Instance:   "/users/12345/msg/abc",
+		},
+	},
+	{
+		InErrType:  "https://neutrinocorp.org/iam/probs/generic-error",
+		InInstance: "/users/12345/msg/abc",
+		InErr:      errors.New("generic error"),
+		ExpHttpErr: HttpError{
+			Type:       "https://neutrinocorp.org/iam/probs/generic-error",
+			Title:      "generic error",
+			Status:     "Internal Server Error",
 			StatusCode: http.StatusInternalServerError,
 			Detail:     "generic error",
 			Instance:   "/users/12345/msg/abc",
