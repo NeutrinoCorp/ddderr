@@ -26,7 +26,7 @@ _Note: `DDD Error` is dependency-free, it complies with Go's built-in error inte
 ## Installation
 Install `DDD Error` by running the command
 
-    go get github.com/neutrinocorp/ddderr
+    go get github.com/neutrinocorp/ddderr/v3
     
 Full documentation is available
 [here](https://pkg.go.dev/github.com/neutrinocorp/ddderr)
