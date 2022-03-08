@@ -10,7 +10,7 @@ import (
 func TestError_Setters(t *testing.T) {
 	pqMockedErr := errors.New("pq: Generic PostgreSQL driver error")
 	err := NewDomain("", "").
-		AttachParent(pqMockedErr).
+		SetParent(pqMockedErr).
 		SetKind("CustomKind").
 		SetTitle("generic title").
 		SetDescription("specific description").
@@ -24,6 +24,79 @@ func TestError_Setters(t *testing.T) {
 	assert.Equal(t, "foo", err.Property())
 	assert.Equal(t, "specific description", err.Error())
 	assert.Equal(t, "FooIsBad", err.Status())
+
+	err = NewOutOfRange("fooBar", 8, 16)
+	err = err.SetProperty("barBaz")
+	assert.Equal(t, "The property barBaz is out of range [8,16)", err.Error())
+
+}
+
+var dynamicFieldTests = []struct {
+	In             Error
+	InDynamicField string
+	ExpDesc        string
+	ExpStatus      string
+}{
+	{
+		In:             NewOutOfRange("bar", 0, 3),
+		InDynamicField: "foo",
+		ExpDesc:        "The property foo is out of range [0,3)",
+		ExpStatus:      "FooOutOfRange",
+	},
+	{
+		In:             NewAlreadyExists("bar"),
+		InDynamicField: "foo",
+		ExpDesc:        "The resource foo already exists",
+		ExpStatus:      "FooAlreadyExists",
+	},
+	{
+		In:             NewInvalidFormat("bar", "jpeg", "gif"),
+		InDynamicField: "foo",
+		ExpDesc:        "The property foo has an invalid format, expected [jpeg,gif]",
+		ExpStatus:      "FooInvalidFormat",
+	},
+	{
+		In: Error{
+			kind: invalidFormat,
+		},
+		InDynamicField: "foo",
+		ExpDesc:        "",
+		ExpStatus:      "FooInvalidFormat",
+	},
+	{
+		In:             NewNotFound("bar"),
+		InDynamicField: "foo",
+		ExpDesc:        "The resource foo was not found",
+		ExpStatus:      "FooNotFound",
+	},
+	{
+		In:             NewRemoteCall("bar.com"),
+		InDynamicField: "foo.org",
+		ExpDesc:        "Failed to call external resource [foo.org]",
+		ExpStatus:      "FooOrgFailedRemoteCall",
+	},
+	{
+		In:             NewRequired("bar"),
+		InDynamicField: "foo",
+		ExpDesc:        "The property foo is required",
+		ExpStatus:      "FooRequired",
+	},
+	{
+		In:             Error{},
+		InDynamicField: "",
+		ExpDesc:        "",
+		ExpStatus:      "",
+	},
+}
+
+func TestDynamicFields(t *testing.T) {
+	for _, tt := range dynamicFieldTests {
+		t.Run("", func(t *testing.T) {
+			err := tt.In.SetProperty(tt.InDynamicField)
+			assert.Equal(t, tt.ExpDesc, err.Description())
+			assert.Equal(t, tt.ExpStatus, err.Status())
+		})
+	}
 }
 
 var newDomainTestSuite = []struct {
@@ -351,7 +424,6 @@ func TestNewOutOfRange(t *testing.T) {
 	for _, tt := range newOutOfRangeTestSuite {
 		t.Run("", func(t *testing.T) {
 			err := NewOutOfRange(tt.InProp, tt.InLimA, tt.InLimB)
-			assert.EqualValues(t, tt.Exp, err)
 			assert.Equal(t, tt.Exp.Title(), err.Title())
 			assert.Equal(t, tt.Exp.Description(), err.Description())
 			assert.Equal(t, tt.Exp.Property(), err.Property())
@@ -431,7 +503,6 @@ func TestNewInvalidFormat(t *testing.T) {
 	for _, tt := range newInvalidFormatTestSuite {
 		t.Run("", func(t *testing.T) {
 			err := NewInvalidFormat(tt.InProperty, tt.InFormats...)
-			assert.EqualValues(t, tt.Exp, err)
 			assert.Equal(t, tt.Exp.Title(), err.Title())
 			assert.Equal(t, tt.Exp.Description(), err.Description())
 			assert.Equal(t, tt.Exp.Property(), err.Property())
